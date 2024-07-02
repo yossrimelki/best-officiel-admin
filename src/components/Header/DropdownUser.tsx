@@ -7,7 +7,7 @@ const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false); 
   const navigation = useNavigate();
   const handleLogout = () => {
-    navigation('/auth/signin');
+    navigation('/');
   }
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">

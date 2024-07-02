@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 const SignIn: React.FC = () => {
   const navigation = useNavigate();
   const handleLogin = () => {
-    navigation('/');
+    navigation('/dashboard');
   }
   return (
     <>

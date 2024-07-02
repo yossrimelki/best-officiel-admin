@@ -30,10 +30,10 @@ function App() {
   ) : (
     <>
       {' '}
-      {pathname === '/auth/signin' || pathname === '/auth/signup' ? (
+      {pathname === '/' ?(
         <Routes>
           <Route
-            path="/auth/signin"
+            path="/"
             element={
               <>
                 <PageTitle title="Best Officiel" />
@@ -55,7 +55,7 @@ function App() {
         <DefaultLayout>
           <Routes>
             <Route
-              index
+              path="/dashboard"
               element={
                 <>
                   <PageTitle title="Best Officiel" />
