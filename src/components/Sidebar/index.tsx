@@ -63,7 +63,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     >
       {/* <!-- SIDEBAR HEADER --> */}
       <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
-        <NavLink to="/" className={'font-bold text-white'}>
+        <NavLink to="/dashboard" className={'font-bold text-white'}>
           Best Officiel
           {/* <img src={Logo} alt="Logo" /> */}
         </NavLink>
@@ -104,7 +104,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             <ul className="mb-6 flex flex-col gap-1.5">
               <li>
                 <NavLink
-                  to="/"
+                  to="/dashboard"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
                     pathname.length === 1 && 'bg-graydark dark:bg-meta-4'
                   }`}
