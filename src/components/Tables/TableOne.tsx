@@ -4,6 +4,7 @@ import BrandTwo from '../../images/brand/brand-02.svg';
 import BrandThree from '../../images/brand/brand-03.svg';
 import BrandFour from '../../images/brand/brand-04.svg';
 import BrandFive from '../../images/brand/brand-05.svg';
+import SelectGroupOne from '../Forms/SelectGroup/SelectGroupOne';
 
 const brandData: BRAND[] = [
   {
@@ -115,7 +116,7 @@ const TableOne = () => {
             </div>
 
             <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
-              <p className="text-meta-5">{brand.conversion}%</p>
+              <SelectGroupOne/>
             </div>
           </div>
         ))}

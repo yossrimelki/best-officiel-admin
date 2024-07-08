@@ -36,7 +36,7 @@ function App() {
             path="/"
             element={
               <>
-                <PageTitle title="Best Officiel" />
+                <PageTitle title="login" />
                 <SignIn />
               </>
             }
