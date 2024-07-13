@@ -11,7 +11,11 @@ import FormLayout from './pages/Form/FormLayout';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Tables from './pages/Tables';
+import Reclamation from './pages/reclamations';
 import DefaultLayout from './layout/DefaultLayout';
+import TableOne from './components/Tables/TableOne';
+import WatchForm from './pages/Form/WatchForm';
+import WatchTable from './components/Tables/WatchTable';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -97,6 +101,51 @@ function App() {
                 <>
                   <PageTitle title="Best Officiel" />
                   <Tables />
+                </>
+              }
+            />
+            <Route
+              path="/reclamation"
+              element={
+                <>
+                  <PageTitle title="Best Officiel" />
+                  <Reclamation />
+                </>
+              }
+            />
+             <Route
+              path="/shoes"
+              element={
+                <>
+                  <PageTitle title="Best Officiel" />
+                  <TableOne />
+                </>
+              }
+            />
+            <Route
+              path="/shoes/add"
+              element={
+                <>
+                  <PageTitle title="Best Officiel" />
+                  <FormElements />
+                </>
+              }
+            />
+            <Route
+              path="/watchs"
+              element={
+                <>
+                  <PageTitle title="Best Officiel" />
+                  <WatchTable />
+                </>
+              }
+            />
+               <Route
+              path="/watchs/add"
+              element={
+                <>
+                  <PageTitle title="Best Officiel" />
+                  <WatchForm />
                 </>
               }
             />
