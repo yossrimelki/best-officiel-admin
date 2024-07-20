@@ -8,7 +8,7 @@ const WatchTable = () => {
   useEffect(() => {
     const getWatches = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/watches');
+        const response = await axios.get('https://testing-server-vercel.vercel.app/api/watches');
         setWatches(response.data);
         setLoading(false);
       } catch (error) {
@@ -22,7 +22,7 @@ const WatchTable = () => {
 
   const handleDelete = async (watchId) => {
     try {
-      await axios.delete(`http://localhost:3000/api/watches/${watchId}`);
+      await axios.delete(`https://testing-server-vercel.vercel.app/api/watches/${watchId}`);
       setWatches(watches.filter(watch => watch._id !== watchId));
     } catch (error) {
       console.error('Failed to delete watch:', error);

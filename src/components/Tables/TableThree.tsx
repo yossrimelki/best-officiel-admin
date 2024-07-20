@@ -7,7 +7,7 @@ const TableThree = () => {
   useEffect(() => {
     const fetchReclamations = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/reclamation'); // Adjust URL as needed
+        const response = await axios.get('https://testing-server-vercel.vercel.app/api/reclamation'); // Adjust URL as needed
         setReclamations(response.data);
       } catch (error) {
         console.error('Error fetching reclamations:', error);
