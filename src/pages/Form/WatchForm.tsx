@@ -29,7 +29,7 @@ const WatchForm = () => {
     setSuccess('');
 
     try {
-      const response = await axios.post('http://localhost:5000/api/watches', watchData, {
+      const response = await axios.post('https://testing-server-vercel.vercel.app/api/watches', watchData, {
         headers: {
           'Content-Type': 'application/json'
         }

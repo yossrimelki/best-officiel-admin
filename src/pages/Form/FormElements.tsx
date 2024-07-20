@@ -42,7 +42,7 @@ const FormElements = () => {
     console.log('Submitting data:', formattedData); // Log data to check before sending
 
     try {
-      const response = await axios.post('http://localhost:5000/api/shoes', formattedData, {
+      const response = await axios.post('https://testing-server-vercel.vercel.app/api/shoes', formattedData, {
         headers: {
           'Content-Type': 'application/json' // Use JSON content type for standard data
         }
