@@ -6,53 +6,54 @@ const FormElements = () => {
   const [shoeData, setShoeData] = useState({
     title: '',
     text: '',
-    img: null, // Change to file
     price: '',
-    sizes: [],
+    sizes: '', // Keep sizes as a string for easy parsing
     rating: '',
     color: '',
     shadow: ''
   });
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setShoeData({
-      ...shoeData,
-      [name]: value
-    });
+    setShoeData(prevState => ({
+      ...prevState,
+      [name]: name === 'price' || name === 'rating' ? parseFloat(value) : value
+    }));
   };
 
-  const handleFileChange = (e) => {
-    setShoeData({
-      ...shoeData,
-      img: e.target.files[0]
-    });
+  const handleSizesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setShoeData(prevState => ({
+      ...prevState,
+      sizes: e.target.value // Directly store sizes as a string
+    }));
   };
 
-  const handleSizesChange = (e) => {
-    const sizes = e.target.value.split(',').map(size => parseFloat(size.trim()));
-    setShoeData({
-      ...shoeData,
-      sizes
-    });
-  };
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData();
-    for (const key in shoeData) {
-      formData.append(key, shoeData[key]);
-    }
+
+    // Prepare the data for submission
+    const formattedData = {
+      ...shoeData,
+      sizes: shoeData.sizes.split(',').map(size => parseFloat(size.trim())).filter(size => !isNaN(size))
+    };
+
+    console.log('Submitting data:', formattedData); // Log data to check before sending
 
     try {
-      const response = await axios.post('http://localhost:3000/api/shoes', formData, {
+      const response = await axios.post('http://localhost:5000/api/shoes', formattedData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
+          'Content-Type': 'application/json' // Use JSON content type for standard data
         }
       });
-      console.log(response.data);
+      console.log('Response:', response.data);
+      setSuccessMessage('Shoe added successfully!');
+      setErrorMessage('');
     } catch (error) {
-      console.error(error);
+      console.error('Error submitting data:', error);
+      setErrorMessage('Failed to add shoe. Please try again.');
+      setSuccessMessage('');
     }
   };
 
@@ -86,12 +87,6 @@ const FormElements = () => {
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
               <input
-                type="file"
-                name="img"
-                onChange={handleFileChange}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-              <input
                 type="number"
                 name="price"
                 placeholder="Price"
@@ -103,7 +98,7 @@ const FormElements = () => {
                 type="text"
                 name="sizes"
                 placeholder="Sizes (comma separated)"
-                value={shoeData.sizes.join(', ')}
+                value={shoeData.sizes}
                 onChange={handleSizesChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
@@ -137,6 +132,16 @@ const FormElements = () => {
               >
                 Add Shoe
               </button>
+              {successMessage && (
+                <div className="mt-4 text-green-600 dark:text-green-400">
+                  {successMessage}
+                </div>
+              )}
+              {errorMessage && (
+                <div className="mt-4 text-red-600 dark:text-red-400">
+                  {errorMessage}
+                </div>
+              )}
             </form>
           </div>
         </div>

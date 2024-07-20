@@ -6,7 +6,6 @@ const WatchForm = () => {
   const [watchData, setWatchData] = useState({
     title: '',
     text: '',
-    img: null,
     price: '',
     rating: '',
     color: '',
@@ -16,7 +15,7 @@ const WatchForm = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setWatchData({
       ...watchData,
@@ -24,37 +23,28 @@ const WatchForm = () => {
     });
   };
 
-  const handleFileChange = (e) => {
-    setWatchData({
-      ...watchData,
-      img: e.target.files[0]
-    });
-  };
-  
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
     setSuccess('');
-    const formData = new FormData();
-    for (const key in watchData) {
-      formData.append(key, watchData[key]);
-    }
-  
+
     try {
-      const response = await axios.post('http://localhost:3000/api/watches', formData, {
+      const response = await axios.post('http://localhost:5000/api/watches', watchData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
+          'Content-Type': 'application/json'
         }
       });
       setSuccess('Watch added successfully!');
       console.log(response.data);
     } catch (error) {
-      setError(error.response.data.message || 'Error adding watch. Please try again.');
+      if (axios.isAxiosError(error) && error.response) {
+        setError(error.response.data.message || 'Error adding watch. Please try again.');
+      } else {
+        setError('Unexpected error occurred. Please try again.');
+      }
       console.error(error);
     }
   };
-  
 
   return (
     <>
@@ -84,12 +74,6 @@ const WatchForm = () => {
                 placeholder="Description"
                 value={watchData.text}
                 onChange={handleChange}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-              <input
-                type="file"
-                name="img"
-                onChange={handleFileChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
               <input

@@ -18,7 +18,7 @@ const SignIn: React.FC = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/api/login', {
+      const response = await axios.post('https://testing-server-vercel.vercel.app/api/login', {
         email,
         password,
       });
