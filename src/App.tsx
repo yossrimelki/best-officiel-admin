@@ -4,7 +4,6 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
 import SignIn from './pages/Authentication/SignIn';
-// import SignUp from './pages/Authentication/SignUp';
 import ECommerce from './pages/Dashboard/ECommerce';
 import FormElements from './pages/Form/FormElements';
 import FormLayout from './pages/Form/FormLayout';
@@ -15,12 +14,16 @@ import Reclamation from './pages/reclamations';
 import DefaultLayout from './layout/DefaultLayout';
 import TableOne from './components/Tables/TableOne';
 import WatchForm from './pages/Form/WatchForm';
+import UpdateWatchForm from './pages/Form/UpdateWatchForm';
 import WatchTable from './components/Tables/WatchTable';
+import AddCategoryForm from './pages/Form/AddCategoryForm';
+import AddSubCategoryForm from './pages/Form/AddSubCategoryForm';
+import CategorySubcategory from './pages/CategorySubcategory';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
   const { pathname } = useLocation();
-  console.log(pathname);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
@@ -33,8 +36,7 @@ function App() {
     <Loader />
   ) : (
     <>
-      {' '}
-      {pathname === '/' ?(
+      {pathname === '/' ? (
         <Routes>
           <Route
             path="/"
@@ -45,15 +47,6 @@ function App() {
               </>
             }
           />
-          {/* <Route
-            path="/auth/signup"
-            element={
-              <>
-                <PageTitle title="Best Officiel" />
-                <SignUp />
-              </>
-            }
-          /> */}
         </Routes>
       ) : (
         <DefaultLayout>
@@ -67,7 +60,6 @@ function App() {
                 </>
               }
             />
-
             <Route
               path="/profile"
               element={
@@ -91,7 +83,16 @@ function App() {
               element={
                 <>
                   <PageTitle title="Best Officiel" />
-                  <FormLayout />
+                  <AddCategoryForm />
+                </>
+              }
+            />
+            <Route
+              path="/subcategories/add-subcategory"
+              element={
+                <>
+                  <PageTitle title="Best Officiel" />
+                  <AddSubCategoryForm />
                 </>
               }
             />
@@ -113,7 +114,7 @@ function App() {
                 </>
               }
             />
-             <Route
+            <Route
               path="/shoes"
               element={
                 <>
@@ -140,7 +141,7 @@ function App() {
                 </>
               }
             />
-               <Route
+            <Route
               path="/watchs/add"
               element={
                 <>
@@ -150,6 +151,17 @@ function App() {
               }
             />
             <Route
+  path="/watchs/edit/:watchId"
+  element={
+    <>
+      <PageTitle title="Edit Watch" />
+      <UpdateWatchForm />
+    </>
+  }
+/>
+           
+ 
+            <Route
               path="/settings"
               element={
                 <>
@@ -158,33 +170,15 @@ function App() {
                 </>
               }
             />
-            {/* <Route
-          path="/chart"
-          element={
-            <>
-              <PageTitle title="Basic Chart | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-              <Chart />
-            </>
-          }
-        /> */}
-            {/* <Route
-          path="/ui/alerts"
-          element={
-            <>
-              <PageTitle title="Alerts | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-              <Alerts />
-            </>
-          }
-        /> */}
-            {/* <Route
-          path="/ui/buttons"
-          element={
-            <>
-              <PageTitle title="Buttons | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-              <Buttons />
-            </>
-          }
-        /> */}
+            <Route
+              path="/categories"
+              element={
+                <>
+                  <PageTitle title="Best Officiel" />
+                  <CategorySubcategory />
+                </>
+              }
+            />
           </Routes>
         </DefaultLayout>
       )}

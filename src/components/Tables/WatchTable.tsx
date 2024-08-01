@@ -1,32 +1,97 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import UpdateWatchForm from '../../pages/Form/UpdateWatchForm';
 
 const WatchTable = () => {
   const [watches, setWatches] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedWatch, setSelectedWatch] = useState(null);
+  const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
-    const getWatches = async () => {
+    const fetchWatches = async () => {
       try {
-        const response = await axios.get('https://testing-server-vercel.vercel.app/api/watches');
+        const response = await axios.get('http://localhost:3000/api/watches');
         setWatches(response.data);
         setLoading(false);
       } catch (error) {
-        console.error('Failed to fetch watches:', error);
+        console.error('Error fetching watches:', error);
         setLoading(false);
       }
     };
 
-    getWatches();
+    fetchWatches();
   }, []);
+
+  const handleEditClick = (watch) => {
+    setSelectedWatch(watch);
+    setShowForm(true);
+  };
+
+  const handleFormClose = () => {
+    setShowForm(false);
+    setSelectedWatch(null);
+  };
+
+  const handleWatchUpdate = (updatedWatch) => {
+    setWatches((prevWatches) =>
+      prevWatches.map((watch) =>
+        watch._id === updatedWatch._id ? updatedWatch : watch
+      )
+    );
+    setShowForm(false);
+    setSelectedWatch(null);
+  };
 
   const handleDelete = async (watchId) => {
     try {
-      await axios.delete(`https://testing-server-vercel.vercel.app/api/watches/${watchId}`);
+      await axios.delete(`http://localhost:3000/api/watches/${watchId}`);
       setWatches(watches.filter(watch => watch._id !== watchId));
     } catch (error) {
       console.error('Failed to delete watch:', error);
     }
+  };
+
+  const renderWatchCard = (watch) => {
+    const discountedPrice = watch.solde ? watch.price - (watch.price * watch.solde / 100) : watch.price;
+
+    return (
+      <div key={watch._id} className="bg-white rounded-lg shadow-md dark:bg-black dark:border-gray-800 border border-gray-200">
+        <div className="p-5">
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{watch.title}</h3>
+          <p className="text-gray-700 dark:text-gray-400">Color: {watch.color}</p>
+          <p className="text-gray-700 dark:text-gray-400">Shadow: {watch.shadow}</p>
+          <p className="text-gray-900 dark:text-white">
+            Price: {watch.solde ? (
+              <>
+                <span className="line-through text-red-500">${watch.price.toFixed(2)}</span>
+                <span className="ml-2 font-bold">${discountedPrice.toFixed(2)}</span>
+              </>
+            ) : (
+              `$${watch.price.toFixed(2)}`
+            )}
+          </p>
+          {watch.solde && (
+            <p className="text-gray-900 dark:text-white">Discount: {watch.solde}%</p>
+          )}
+          <p className="text-gray-900 dark:text-white">Rating: {watch.rating}</p>
+          <img src={`http://localhost:3000${watch.img}`} alt={watch.title} className="w-32 h-32 object-cover" />
+
+          <button
+            onClick={() => handleEditClick(watch)}
+            className="mt-2 mr-2 px-4 py-2 bg-yellow-500 text-white rounded"
+          >
+            Edit
+          </button>
+          <button
+            onClick={() => handleDelete(watch._id)}
+            className="mt-2 px-4 py-2 bg-red-500 text-white rounded"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    );
   };
 
   if (loading) {
@@ -34,79 +99,19 @@ const WatchTable = () => {
   }
 
   return (
-    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-      <div className="py-6 px-4 md:px-6 xl:px-7.5">
-        <h4 className="text-xl font-semibold text-black dark:text-white">
-          Top Watches
-        </h4>
-      </div>
-
-      <div className="grid grid-cols-6 border-t border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
-        <div className="col-span-3 flex items-center">
-          <p className="font-medium">Watch Name</p>
-        </div>
-        <div className="col-span-1 flex items-center">
-          <p className="font-medium">Price</p>
-        </div>
-        <div className="col-span-1 flex items-center">
-          <p className="font-medium">Rating</p>
-        </div>
-        <div className="col-span-1 flex items-center">
-          <p className="font-medium">Color</p>
-        </div>
-        <div className="col-span-1 flex items-center">
-          <p className="font-medium">Shadow</p>
-        </div>
-        <div className="col-span-1 flex items-center">
-          <p className="font-medium">Actions</p>
+    <div>
+      <div className="col-span-12 mt-8 overflow-auto lg:overflow-visible">
+        <div className="p-5 grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-1">
+          {watches.map(renderWatchCard)}
         </div>
       </div>
-
-      {watches.map((watch, key) => (
-        <div
-          className="grid grid-cols-6 border-t border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5"
-          key={key}
-        >
-          <div className="col-span-3 flex items-center">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-              <div className="h-12.5 w-15 rounded-md">
-                <img src={`http://localhost:3000/${watch.img}`} alt="Product" />
-              </div>
-              <p className="text-sm text-black dark:text-white">
-                {watch.title}
-              </p>
-            </div>
-          </div>
-          <div className="col-span-1 flex items-center">
-            <p className="text-sm text-black dark:text-white">
-              ${watch.price}
-            </p>
-          </div>
-          <div className="col-span-1 flex items-center">
-            <p className="text-sm text-black dark:text-white">
-              {watch.rating}
-            </p>
-          </div>
-          <div className="col-span-1 flex items-center">
-            <p className="text-sm text-black dark:text-white">
-              {watch.color}
-            </p>
-          </div>
-          <div className="col-span-1 flex items-center">
-            <p className="text-sm text-black dark:text-white">
-              {watch.shadow}
-            </p>
-          </div>
-          <div className="col-span-1 flex items-center">
-            <button
-              onClick={() => handleDelete(watch._id)}
-              className="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded-md"
-            >
-              Delete
-            </button>
+      {showForm && selectedWatch && (
+        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <UpdateWatchForm watch={selectedWatch} onClose={handleFormClose} onUpdate={handleWatchUpdate} />
           </div>
         </div>
-      ))}
+      )}
     </div>
   );
 };

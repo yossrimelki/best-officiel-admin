@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const WatchForm = ({ onClose }) => {
-  const [watchData, setWatchData] = useState({
+const UpdateWatchForm = ({ watch, onClose, onUpdate }) => {
+  const [formData, setFormData] = useState({
     title: '',
     text: '',
     price: '',
     rating: '',
     color: '',
     shadow: '',
-    subCategory: '',
+    img: '',
     solde: '',
     category: '',
-    imageFile: null  // New state for image file
+    subCategory: ''
   });
-
+  const [imageFile, setImageFile] = useState(null);
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
   const [error, setError] = useState('');
@@ -39,6 +39,21 @@ const WatchForm = ({ onClose }) => {
   ];
 
   useEffect(() => {
+    if (watch) {
+      const fetchWatchDetails = async () => {
+        try {
+          const response = await axios.get(`http://localhost:3000/api/watches/${watch._id}`);
+          setFormData(response.data);
+        } catch (error) {
+          console.error('Failed to fetch watch details:', error);
+        }
+      };
+
+      fetchWatchDetails();
+    }
+  }, [watch]);
+
+  useEffect(() => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get('http://localhost:3000/api/categories');
@@ -53,11 +68,11 @@ const WatchForm = ({ onClose }) => {
   }, []);
 
   useEffect(() => {
-    if (watchData.category) {
+    if (formData.category) {
       const fetchSubCategories = async () => {
         try {
           const response = await axios.get('http://localhost:3000/api/subcategories', {
-            params: { category: watchData.category }
+            params: { category: formData.category }
           });
           setSubCategories(response.data);
         } catch (error) {
@@ -70,18 +85,15 @@ const WatchForm = ({ onClose }) => {
     } else {
       setSubCategories([]);
     }
-  }, [watchData.category]);
+  }, [formData.category]);
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
     if (type === 'file') {
-      setWatchData({
-        ...watchData,
-        [name]: files[0]
-      });
+      setImageFile(files[0]);
     } else {
-      setWatchData({
-        ...watchData,
+      setFormData({
+        ...formData,
         [name]: value
       });
     }
@@ -91,44 +103,45 @@ const WatchForm = ({ onClose }) => {
     e.preventDefault();
     setError('');
     setSuccess('');
-  
-    if (!watchData.title || !watchData.price || !watchData.rating || !watchData.category || !watchData.subCategory) {
-      setError('Please fill out all required fields.');
-      return;
+
+    const data = new FormData();
+    for (const key in formData) {
+      data.append(key, formData[key]);
     }
-  
-    const formData = new FormData();
-    for (const key in watchData) {
-      formData.append(key, watchData[key]);
+    if (imageFile) {
+      data.append('img', imageFile);
     }
-  
+
     try {
-      const response = await axios.post('http://localhost:3000/api/watches', formData, {
+      const response = await axios.put(`http://localhost:3000/api/watches/${watch._id}`, data, {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+          'Content-Type': 'multipart/form-data',
+        },
       });
-      setSuccess('Watch added successfully.');
+      setSuccess('Watch updated successfully.');
+      onUpdate(response.data);
       setTimeout(() => {
         onClose();
       }, 1000);
     } catch (error) {
-      console.error('Failed to add watch:', error);
-      setError('Failed to add watch. Please try again.');
+      console.error('Failed to update watch:', error);
+      setError('Failed to update watch. Please try again.');
     }
   };
+
   return (
     <div className="p-4 bg-white shadow-md rounded-lg">
-      <h2 className="text-xl font-semibold mb-4">Add New Watch</h2>
+      <h2 className="text-xl font-semibold mb-4">Update Watch</h2>
       {error && <p className="text-red-500 text-sm">{error}</p>}
       {success && <p className="text-green-500 text-sm">{success}</p>}
       <form onSubmit={handleSubmit}>
+        {/* Form Fields */}
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">Title</label>
           <input
             type="text"
             name="title"
-            value={watchData.title}
+            value={formData.title}
             onChange={handleChange}
             className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
           />
@@ -138,7 +151,7 @@ const WatchForm = ({ onClose }) => {
           <input
             type="text"
             name="text"
-            value={watchData.text}
+            value={formData.text}
             onChange={handleChange}
             className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
           />
@@ -148,7 +161,7 @@ const WatchForm = ({ onClose }) => {
           <input
             type="number"
             name="price"
-            value={watchData.price}
+            value={formData.price}
             onChange={handleChange}
             className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
           />
@@ -158,7 +171,7 @@ const WatchForm = ({ onClose }) => {
           <input
             type="number"
             name="rating"
-            value={watchData.rating}
+            value={formData.rating}
             onChange={handleChange}
             className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
           />
@@ -167,7 +180,7 @@ const WatchForm = ({ onClose }) => {
           <label className="block text-sm font-medium text-gray-700">Color</label>
           <select
             name="color"
-            value={watchData.color}
+            value={formData.color}
             onChange={handleChange}
             className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
           >
@@ -183,7 +196,7 @@ const WatchForm = ({ onClose }) => {
           <label className="block text-sm font-medium text-gray-700">Shadow</label>
           <select
             name="shadow"
-            value={watchData.shadow}
+            value={formData.shadow}
             onChange={handleChange}
             className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
           >
@@ -196,10 +209,29 @@ const WatchForm = ({ onClose }) => {
           </select>
         </div>
         <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">Image</label>
+          <input
+            type="file"
+            name="img"
+            onChange={handleChange}
+            className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">Discount</label>
+          <input
+            type="number"
+            name="solde"
+            value={formData.solde}
+            onChange={handleChange}
+            className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+          />
+        </div>
+        <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">Category</label>
           <select
             name="category"
-            value={watchData.category}
+            value={formData.category}
             onChange={handleChange}
             className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
           >
@@ -215,7 +247,7 @@ const WatchForm = ({ onClose }) => {
           <label className="block text-sm font-medium text-gray-700">Sub-category</label>
           <select
             name="subCategory"
-            value={watchData.subCategory}
+            value={formData.subCategory}
             onChange={handleChange}
             className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
           >
@@ -226,25 +258,6 @@ const WatchForm = ({ onClose }) => {
               </option>
             ))}
           </select>
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Discount</label>
-          <input
-            type="number"
-            name="solde"
-            value={watchData.solde}
-            onChange={handleChange}
-            className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Image</label>
-          <input
-  type="file"
-  name="img"  // This should match the Multer field name
-  onChange={handleChange}
-  className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-/>
         </div>
         <div className="flex justify-end">
           <button
@@ -258,7 +271,7 @@ const WatchForm = ({ onClose }) => {
             type="submit"
             className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
           >
-            Add Watch
+            Save
           </button>
         </div>
       </form>
@@ -266,4 +279,4 @@ const WatchForm = ({ onClose }) => {
   );
 };
 
-export default WatchForm;
+export default UpdateWatchForm;
