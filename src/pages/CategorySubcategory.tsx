@@ -11,7 +11,7 @@ const CategorySubcategory = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/categories');
+        const response = await axios.get('https://api.bestofficiel.com/api/categories');
         setCategories(response.data);
       } catch (error) {
         console.error('Error fetching categories:', error);
@@ -59,7 +59,7 @@ const CategorySubcategory = () => {
     }
 
     try {
-      const response = await axios.put(`http://localhost:3000/api/categories/${selectedCategory._id}`, formData, {
+      const response = await axios.put(`https://api.bestofficiel.com/api/categories/${selectedCategory._id}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -80,7 +80,7 @@ const CategorySubcategory = () => {
 
   const handleDelete = async (categoryId) => {
     try {
-      await axios.delete(`http://localhost:3000/api/categories/${categoryId}`);
+      await axios.delete(`https://api.bestofficiel.com/api/categories/${categoryId}`);
       setCategories(categories.filter(cat => cat._id !== categoryId));
       setSuccess('Category deleted successfully!');
     } catch (error) {
