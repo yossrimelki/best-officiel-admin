@@ -69,7 +69,7 @@ const FormElements = () => {
     if (file) formData.append('img', file); // Append the file if selected
 
     try {
-      const response = await axios.post('http://localhost:3000/api/shoes', formData, {
+      const response = await axios.post('https://api.bestofficiel.com/api/shoes', formData, {
         headers: {
           'Content-Type': 'multipart/form-data' // Set content type for file uploads
         }

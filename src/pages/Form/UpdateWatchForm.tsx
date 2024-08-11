@@ -42,7 +42,7 @@ const UpdateWatchForm = ({ watch, onClose, onUpdate }) => {
     if (watch) {
       const fetchWatchDetails = async () => {
         try {
-          const response = await axios.get(`http://localhost:3000/api/watches/${watch._id}`);
+          const response = await axios.get(`https://api.bestofficiel.com/api/watches/${watch._id}`);
           setFormData(response.data);
         } catch (error) {
           console.error('Failed to fetch watch details:', error);
@@ -56,7 +56,7 @@ const UpdateWatchForm = ({ watch, onClose, onUpdate }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/categories');
+        const response = await axios.get('https://api.bestofficiel.com/api/categories');
         setCategories(response.data);
       } catch (error) {
         console.error('Error fetching categories:', error);
@@ -71,7 +71,7 @@ const UpdateWatchForm = ({ watch, onClose, onUpdate }) => {
     if (formData.category) {
       const fetchSubCategories = async () => {
         try {
-          const response = await axios.get('http://localhost:3000/api/subcategories', {
+          const response = await axios.get('https://api.bestofficiel.com/api/subcategories', {
             params: { category: formData.category }
           });
           setSubCategories(response.data);
@@ -113,7 +113,7 @@ const UpdateWatchForm = ({ watch, onClose, onUpdate }) => {
     }
 
     try {
-      const response = await axios.put(`http://localhost:3000/api/watches/${watch._id}`, data, {
+      const response = await axios.put(`https://api.bestofficiel.com/api/watches/${watch._id}`, data, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

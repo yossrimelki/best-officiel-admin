@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:3000/api'; // Replace with your actual backend API URL
+const BASE_URL = 'https://api.bestofficiel.com/api'; // Replace with your actual backend API URL
 
 // Function to fetch all commandes
 export const getCommandes = async () => {

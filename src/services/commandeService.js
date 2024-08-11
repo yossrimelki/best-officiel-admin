@@ -1,5 +1,5 @@
 import axios from 'axios';
 export const updateCommandeStatus = async (id) => {
-    const response = await axios.put(`http://localhost:3000/api/commandes/${id}/status`);
+    const response = await axios.put(`https://api.bestofficiel.com/api/commandes/${id}/status`);
     return response.data;
   };    

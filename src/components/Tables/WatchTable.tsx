@@ -11,7 +11,7 @@ const WatchTable = () => {
   useEffect(() => {
     const fetchWatches = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/watches');
+        const response = await axios.get('https://api.bestofficiel.com/api/watches');
         setWatches(response.data);
         setLoading(false);
       } catch (error) {
@@ -45,7 +45,7 @@ const WatchTable = () => {
 
   const handleDelete = async (watchId) => {
     try {
-      await axios.delete(`http://localhost:3000/api/watches/${watchId}`);
+      await axios.delete(`https://api.bestofficiel.com/api/watches/${watchId}`);
       setWatches(watches.filter(watch => watch._id !== watchId));
     } catch (error) {
       console.error('Failed to delete watch:', error);
@@ -75,7 +75,7 @@ const WatchTable = () => {
             <p className="text-gray-900 dark:text-white">Discount: {watch.solde}%</p>
           )}
           <p className="text-gray-900 dark:text-white">Rating: {watch.rating}</p>
-          <img src={`http://localhost:3000${watch.img}`} alt={watch.title} className="w-32 h-32 object-cover" />
+          <img src={`https://api.bestofficiel.com${watch.img}`} alt={watch.title} className="w-32 h-32 object-cover" />
 
           <button
             onClick={() => handleEditClick(watch)}

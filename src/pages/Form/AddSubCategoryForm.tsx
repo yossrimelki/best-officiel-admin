@@ -39,7 +39,7 @@ const AddSubCategoryForm = () => {
     setSuccess('');
 
     try {
-      const response = await axios.post('http://localhost:3000/api/subcategories', subCategoryData, {
+      const response = await axios.post('https://api.bestofficiel.com/api/subcategories', subCategoryData, {
         headers: {
           'Content-Type': 'application/json'
         }

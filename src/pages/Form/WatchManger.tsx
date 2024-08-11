@@ -12,7 +12,7 @@ const WatchManager = () => {
   useEffect(() => {
     const fetchWatches = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/watches');
+        const response = await axios.get('https://api.bestofficiel.com/api/watches');
         setWatches(response.data);
       } catch (error) {
         console.error('Error fetching watches:', error);

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const fetchShoes = async () => {
   try {
-    const response = await fetch('https://testing-server-vercel.vercel.app/api/shoes');
+    const response = await fetch('https://api.bestofficiel.com/api/shoes');
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
@@ -16,7 +16,7 @@ export const fetchShoes = async () => {
 
 export const deleteShoe = async (shoeId) => {
   try {
-    const response = await axios.delete(`https://testing-server-vercel.vercel.app/api/shoes/${shoeId}`);
+    const response = await axios.delete(`https://api.bestofficiel.com/api/shoes/${shoeId}`);
     if (response.status !== 200) {
       throw new Error('Failed to delete shoe');
     }

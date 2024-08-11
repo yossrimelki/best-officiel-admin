@@ -72,7 +72,7 @@ const EditForm = ({ shoe, onClose, onUpdate }) => {
     if (file) formData.append('img', file);
 
     try {
-      const response = await axios.put(`http://localhost:3000/api/shoes/${shoe._id}`, formData, {
+      const response = await axios.put(`https://api.bestofficiel.com/api/shoes/${shoe._id}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

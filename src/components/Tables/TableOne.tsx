@@ -77,7 +77,7 @@ const TableOne = () => {
                   <p className="text-gray-900 dark:text-white">Sizes: {shoe.sizes.join(', ')}</p>
                   <p className="text-gray-900 dark:text-white">Color: {shoe.color}</p>
                   <p className="text-gray-900 dark:text-white">Shadow: {shoe.shadow}</p>
-                  <img src={`http://localhost:3000${shoe.img}`} alt={shoe.title} className="w-full h-auto mt-2" />
+                  <img src={`https://api.bestofficiel.com${shoe.img}`} alt={shoe.title} className="w-full h-auto mt-2" />
                   <button
                     onClick={() => handleEdit(shoe)}
                     className="mt-2 mr-2 px-4 py-2 bg-yellow-500 text-white rounded"
