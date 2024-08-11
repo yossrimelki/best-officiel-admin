@@ -1,5 +1,3 @@
-// TableTwo.js
-
 import React, { useEffect, useState } from 'react';
 import { getCommandes, getShoeById, getWatchById, updateCommandeStatus } from '../../services/apiService';
 
@@ -74,7 +72,8 @@ const TableTwo = () => {
       const shoe = shoesDetails[item.productId._id];
       details = (
         <>
-          <p className="text-xs text-gray-500 dark:text-gray-400">Sizes: {shoe.sizes.join(', ')}</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400">Selected Size: {item.size}</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400">Available Sizes: {shoe.sizes.join(', ')}</p>
           <p className="text-xs text-gray-500 dark:text-gray-400">Color: {shoe.color}</p>
           <p className="text-xs text-gray-500 dark:text-gray-400">Price: ${shoe.price}</p>
         </>
