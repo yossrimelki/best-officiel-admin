@@ -122,7 +122,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                       fill=""
                     />
                   </svg>
-                  Dashboard
+                  Tableau de bord
                 </NavLink>
               </li>
               {/* <!-- Menu Item Profile --> */}
@@ -202,7 +202,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             fill=""
                           />
                         </svg>
-                        Shoes
+                        Nouvel arrivage
                         <svg
                           className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
                             open && 'rotate-180'
@@ -236,7 +236,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                                 (isActive && '!text-white')
                               }
                             >
-                              Add Shoes 
+                              Ajouter nouvel arrivage
                             </NavLink>
                           </li>
                           <li>
@@ -247,7 +247,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                                 (isActive && '!text-white')
                               }
                             >
-                              Shoes List
+                              List nouvel arrivage
                             </NavLink>
                           </li>
                         </ul>
@@ -303,7 +303,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               fill=""
             />
           </svg>
-          Categories & Subcategories
+          Categories & Sous-categories
           <svg
             className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${open && 'rotate-180'}`}
             width="20"
@@ -333,7 +333,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   (isActive && '!text-white')
                 }
               >
-                Add Category
+                Ajouter Categories
               </NavLink>
             </li>
             <li>
@@ -344,7 +344,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   (isActive && '!text-white')
                 }
               >
-                Add Subcategory
+                Ajouter Sous-categories
               </NavLink>
             </li>
             <li>
@@ -355,7 +355,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   (isActive && '!text-white')
                 }
               >
-                Categories List
+                List Categories&Sous-categories
               </NavLink>
             </li>
           </ul>
@@ -413,7 +413,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             fill=""
                           />
                         </svg>
-                        Product
+                        Produit
                         <svg
                           className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
                             open && 'rotate-180'
@@ -447,7 +447,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                                 (isActive && '!text-white')
                               }
                             >
-                              Add Product
+                              Ajouter Produit
                             </NavLink>
                           </li>
                           <li>
@@ -458,7 +458,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                                 (isActive && '!text-white')
                               }
                             >
-                              Watch List
+                              List Produit
                             </NavLink>
                           </li>
                         </ul>

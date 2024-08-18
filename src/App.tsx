@@ -161,15 +161,7 @@ function App() {
 />
            
  
-            <Route
-              path="/settings"
-              element={
-                <>
-                  <PageTitle title="Best Officiel" />
-                  <Settings />
-                </>
-              }
-            />
+           
             <Route
               path="/categories"
               element={

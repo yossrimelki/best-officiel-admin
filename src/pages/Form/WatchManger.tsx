@@ -42,12 +42,12 @@ const WatchManager = () => {
 
   return (
     <div>
-      <h1>Watch Manager</h1>
+      <h1>Produit Manager</h1>
       <button
         onClick={handleAddClick}
         className="bg-green-500 text-white py-2 px-4 rounded mb-4"
       >
-        Add New Watch
+        Ajouter produit
       </button>
       <div>
         {watches.map(watch => (
@@ -57,7 +57,7 @@ const WatchManager = () => {
               onClick={() => handleEditClick(watch)}
               className="bg-blue-500 text-white py-1 px-3 rounded"
             >
-              Edit
+              Modifier
             </button>
           </div>
         ))}

@@ -69,7 +69,7 @@ const AppRouter = () => {
                     <rect x="4" y="14" width="6" height="6" rx="1"></rect>
                     <rect x="14" y="14" width="6" height="6" rx="1"></rect>
                   </svg>
-                  <span className="text-sm ml-2">Dashboard</span>
+                  <span className="text-sm ml-2">tableau de bord</span>
                 </a>
                 <div className="py-1 px-3 bg-gray-600 rounded text-gray-300 flex items-center justify-center text-xs">
                   5

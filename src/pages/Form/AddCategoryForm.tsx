@@ -4,26 +4,18 @@ import axios from 'axios';
 const AddCategoryForm = () => {
   const [categoryData, setCategoryData] = useState({
     name: '',
-    description: '',
-    image: null
+    description: ''
   });
 
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
   const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    if (name === 'image') {
-      setCategoryData({
-        ...categoryData,
-        image: files[0] // Store the selected file
-      });
-    } else {
-      setCategoryData({
-        ...categoryData,
-        [name]: value
-      });
-    }
+    const { name, value } = e.target;
+    setCategoryData({
+      ...categoryData,
+      [name]: value
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -31,19 +23,13 @@ const AddCategoryForm = () => {
     setError('');
     setSuccess('');
 
-    const formData = new FormData();
-    formData.append('name', categoryData.name);
-    formData.append('description', categoryData.description);
-    if (categoryData.image) {
-      formData.append('image', categoryData.image);
-    }
+    const formData = {
+      name: categoryData.name,
+      description: categoryData.description
+    };
 
     try {
-      const response = await axios.post('https://api.bestofficiel.com/api/categories', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
+      const response = await axios.post('https://api.bestofficiel.com/api/categories', formData);
       setSuccess('Category added successfully!');
       console.log(response.data);
     } catch (error) {
@@ -67,7 +53,7 @@ const AddCategoryForm = () => {
         <input
           type="text"
           name="name"
-          placeholder="Name"
+          placeholder="Title categories"
           value={categoryData.name}
           onChange={handleChange}
           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -80,20 +66,16 @@ const AddCategoryForm = () => {
           onChange={handleChange}
           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
         />
-        <input
-          type="file"
-          name="image"
-          onChange={handleChange}
-          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-        />
+       
         <button
           type="submit"
           className="inline-flex items-center justify-center rounded-md border border-primary bg-primary py-2 px-4 text-center text-base font-medium text-white hover:bg-opacity-90 lg:px-5 xl:px-5"
         >
-          Add Category
+          Ajouter Categorie
         </button>
-      </form>
-    </div>
+      </form><br></br><br></br><br></br><br></br>
+      
+    </div> 
   );
 };
 

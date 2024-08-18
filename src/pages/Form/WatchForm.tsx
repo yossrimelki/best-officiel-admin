@@ -119,12 +119,12 @@ const WatchForm = ({ onClose }) => {
   };
   return (
     <div className="p-4 bg-white shadow-md rounded-lg">
-      <h2 className="text-xl font-semibold mb-4">Add New Watch</h2>
+      <h2 className="text-xl font-semibold mb-4">Ajouter Produit</h2>
       {error && <p className="text-red-500 text-sm">{error}</p>}
       {success && <p className="text-green-500 text-sm">{success}</p>}
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Title</label>
+          <label className="block text-sm font-medium text-gray-700">Titre</label>
           <input
             type="text"
             name="title"
@@ -134,7 +134,7 @@ const WatchForm = ({ onClose }) => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Text</label>
+          <label className="block text-sm font-medium text-gray-700">description</label>
           <input
             type="text"
             name="text"
@@ -154,7 +154,7 @@ const WatchForm = ({ onClose }) => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Rating</label>
+          <label className="block text-sm font-medium text-gray-700">Avis en etoil</label>
           <input
             type="number"
             name="rating"
@@ -196,7 +196,7 @@ const WatchForm = ({ onClose }) => {
           </select>
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Category</label>
+          <label className="block text-sm font-medium text-gray-700">Categorie</label>
           <select
             name="category"
             value={watchData.category}
@@ -212,14 +212,14 @@ const WatchForm = ({ onClose }) => {
           </select>
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Sub-category</label>
+          <label className="block text-sm font-medium text-gray-700">Sous-categorie</label>
           <select
             name="subCategory"
             value={watchData.subCategory}
             onChange={handleChange}
             className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
           >
-            <option value="">Select a sub-category</option>
+            <option value="">Select a sous-categorie</option>
             {subCategories.map((subCategory) => (
               <option key={subCategory._id} value={subCategory._id}>
                 {subCategory.title}
@@ -228,7 +228,7 @@ const WatchForm = ({ onClose }) => {
           </select>
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Discount</label>
+          <label className="block text-sm font-medium text-gray-700">Solde</label>
           <input
             type="number"
             name="solde"
@@ -258,7 +258,7 @@ const WatchForm = ({ onClose }) => {
             type="submit"
             className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
           >
-            Add Watch
+            Ajouter Produit
           </button>
         </div>
       </form>
