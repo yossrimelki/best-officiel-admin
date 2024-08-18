@@ -9,11 +9,11 @@ const FormElements = () => {
     price: '',
     sizes: '',
     rating: '',
-    color: '',
-    shadow: '',
+    color: 'from-blue-900 to-blue-500', // Default color
+    shadow: 'shadow-lg shadow-blue-500', // Default shadow
     solde: ''
   });
-  const [file, setFile] = useState(null); // New state for file
+  const [files, setFiles] = useState([]);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -50,13 +50,13 @@ const FormElements = () => {
   };
 
   const handleFileChange = (e) => {
-    setFile(e.target.files[0]); // Save the selected file
+    const newFiles = Array.from(e.target.files);
+    setFiles(prevFiles => [...prevFiles, ...newFiles]);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Prepare form data with file
     const formData = new FormData();
     formData.append('title', shoeData.title);
     formData.append('text', shoeData.text);
@@ -66,12 +66,15 @@ const FormElements = () => {
     formData.append('color', shoeData.color);
     formData.append('shadow', shoeData.shadow);
     formData.append('solde', shoeData.solde);
-    if (file) formData.append('img', file); // Append the file if selected
+
+    files.forEach((file, index) => {
+      formData.append(`img${index}`, file);
+    });
 
     try {
       const response = await axios.post('https://api.bestofficiel.com/api/shoes', formData, {
         headers: {
-          'Content-Type': 'multipart/form-data' // Set content type for file uploads
+          'Content-Type': 'multipart/form-data'
         }
       });
       setSuccessMessage('Shoe added successfully!');
@@ -101,7 +104,7 @@ const FormElements = () => {
                 placeholder="Title"
                 value={shoeData.title}
                 onChange={handleChange}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
               <input
                 type="text"
@@ -109,7 +112,7 @@ const FormElements = () => {
                 placeholder="Description"
                 value={shoeData.text}
                 onChange={handleChange}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
               <input
                 type="number"
@@ -117,7 +120,7 @@ const FormElements = () => {
                 placeholder="Price"
                 value={shoeData.price}
                 onChange={handleChange}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
               <input
                 type="text"
@@ -125,7 +128,7 @@ const FormElements = () => {
                 placeholder="Sizes (comma separated)"
                 value={shoeData.sizes}
                 onChange={handleSizesChange}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
               <input
                 type="number"
@@ -133,13 +136,13 @@ const FormElements = () => {
                 placeholder="Avis Star"
                 value={shoeData.rating}
                 onChange={handleChange}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
               <select
                 name="color"
                 value={shoeData.color}
                 onChange={handleChange}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               >
                 {colorOptions.map(option => (
                   <option key={option.value} value={option.value}>
@@ -151,7 +154,7 @@ const FormElements = () => {
                 name="shadow"
                 value={shoeData.shadow}
                 onChange={handleChange}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               >
                 {shadowOptions.map(option => (
                   <option key={option.value} value={option.value}>
@@ -165,12 +168,13 @@ const FormElements = () => {
                 placeholder="Solde"
                 value={shoeData.solde}
                 onChange={handleChange}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
               <input
                 type="file"
-                name="img" 
+                name="img"
                 accept="image/*"
+                multiple
                 onChange={handleFileChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
@@ -183,10 +187,25 @@ const FormElements = () => {
               {successMessage && <p className="text-green-500">{successMessage}</p>}
               {errorMessage && <p className="text-red-500">{errorMessage}</p>}
             </form>
+
+            {/* Display all selected images */}
+            {files.length > 0 && (
+              <div className="mt-4 grid grid-cols-2 gap-2">
+                {files.map((file, index) => (
+                  <div key={index} className="relative">
+                    <img
+                      src={URL.createObjectURL(file)}
+                      alt={`Preview ${index}`}
+                      className="w-full h-auto object-cover rounded-lg"
+                    />
+                    <p className="absolute top-1 right-1 text-xs text-gray-500">{file.name}</p>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
-      <br></br><br></br><br></br><br></br><br></br>
     </>
   );
 };

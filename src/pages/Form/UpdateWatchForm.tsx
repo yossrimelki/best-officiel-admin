@@ -9,12 +9,13 @@ const UpdateWatchForm = ({ watch, onClose, onUpdate }) => {
     rating: '',
     color: '',
     shadow: '',
-    img: '',
+    img: [],
     solde: '',
     category: '',
     subCategory: ''
   });
-  const [imageFile, setImageFile] = useState(null);
+  const [imageFiles, setImageFiles] = useState([]);
+  const [imagePreviews, setImagePreviews] = useState([]);
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
   const [error, setError] = useState('');
@@ -44,6 +45,10 @@ const UpdateWatchForm = ({ watch, onClose, onUpdate }) => {
         try {
           const response = await axios.get(`https://api.bestofficiel.com/api/watches/${watch._id}`);
           setFormData(response.data);
+          if (response.data.img && response.data.img.length > 0) {
+            const previews = response.data.img.map((img) => `https://api.bestofficiel.com/${img}`);
+            setImagePreviews(previews);
+          }
         } catch (error) {
           console.error('Failed to fetch watch details:', error);
         }
@@ -90,7 +95,9 @@ const UpdateWatchForm = ({ watch, onClose, onUpdate }) => {
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
     if (type === 'file') {
-      setImageFile(files[0]);
+      setImageFiles([...files]);
+      const previews = Array.from(files).map(file => URL.createObjectURL(file));
+      setImagePreviews(previews);
     } else {
       setFormData({
         ...formData,
@@ -108,9 +115,9 @@ const UpdateWatchForm = ({ watch, onClose, onUpdate }) => {
     for (const key in formData) {
       data.append(key, formData[key]);
     }
-    if (imageFile) {
-      data.append('img', imageFile);
-    }
+    imageFiles.forEach(file => {
+      data.append('img', file);
+    });
 
     try {
       const response = await axios.put(`https://api.bestofficiel.com/api/watches/${watch._id}`, data, {
@@ -147,7 +154,7 @@ const UpdateWatchForm = ({ watch, onClose, onUpdate }) => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">description</label>
+          <label className="block text-sm font-medium text-gray-700">Description</label>
           <input
             type="text"
             name="text"
@@ -167,7 +174,7 @@ const UpdateWatchForm = ({ watch, onClose, onUpdate }) => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Avis en etoil</label>
+          <label className="block text-sm font-medium text-gray-700">Avis en étoile</label>
           <input
             type="number"
             name="rating"
@@ -209,14 +216,30 @@ const UpdateWatchForm = ({ watch, onClose, onUpdate }) => {
           </select>
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Image</label>
+          <label className="block text-sm font-medium text-gray-700">Images</label>
           <input
             type="file"
             name="img"
+            multiple
             onChange={handleChange}
             className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
           />
         </div>
+        {imagePreviews.length > 0 && (
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700">Image Previews</label>
+            <div className="flex flex-wrap gap-2">
+              {imagePreviews.map((preview, index) => (
+                <img
+                  key={index}
+                  src={preview}
+                  alt={`Preview ${index}`}
+                  className="w-32 h-32 object-cover border rounded"
+                />
+              ))}
+            </div>
+          </div>
+        )}
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">Solde</label>
           <input
@@ -228,7 +251,7 @@ const UpdateWatchForm = ({ watch, onClose, onUpdate }) => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Categorie</label>
+          <label className="block text-sm font-medium text-gray-700">Category</label>
           <select
             name="category"
             value={formData.category}
@@ -244,14 +267,14 @@ const UpdateWatchForm = ({ watch, onClose, onUpdate }) => {
           </select>
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Sous-categorie</label>
+          <label className="block text-sm font-medium text-gray-700">Sub-Category</label>
           <select
             name="subCategory"
             value={formData.subCategory}
             onChange={handleChange}
             className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
           >
-            <option value="">Select a sous-categorie</option>
+            <option value="">Select a sub-category</option>
             {subCategories.map((subCategory) => (
               <option key={subCategory._id} value={subCategory._id}>
                 {subCategory.title}
@@ -259,19 +282,19 @@ const UpdateWatchForm = ({ watch, onClose, onUpdate }) => {
             ))}
           </select>
         </div>
-        <div className="flex justify-end">
+        <div className="flex gap-4">
+          <button
+            type="submit"
+            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+          >
+            Update Watch
+          </button>
           <button
             type="button"
             onClick={onClose}
-            className="mr-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700"
+            className="px-4 py-2 bg-gray-300 text-black rounded-md hover:bg-gray-400"
           >
             Cancel
-          </button>
-          <button
-            type="submit"
-            className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
-          >
-            Save
           </button>
         </div>
       </form>

@@ -75,7 +75,7 @@ const WatchTable = () => {
             <p className="text-gray-900 dark:text-white">Discount: {watch.solde}%</p>
           )}
           <p className="text-gray-900 dark:text-white">Rating: {watch.rating}</p>
-          <img src={`https://api.bestofficiel.com${watch.img}`} alt={watch.title} className="w-32 h-32 object-cover" />
+          <img src={`https://api.bestofficiel.com${watch.img[0]}`} alt={watch.title} className="w-32 h-32 object-cover" />
 
           <button
             onClick={() => handleEditClick(watch)}
